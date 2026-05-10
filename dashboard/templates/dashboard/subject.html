@@ -1,0 +1,130 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Subjects | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Academic planning</p>
+        <h1>Subjects</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="primary-button" type="button">Add Subject</button>
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="Subject statistics">
+    {% for stat in subject_stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>Current academic year</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-grid teacher-overview">
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Catalog</p>
+                <h2>Subject List</h2>
+            </div>
+            <button class="text-button" type="button">Export</button>
+        </div>
+
+        <div class="student-toolbar">
+            <label class="search-field">
+                <span>Search</span>
+                <input type="search" placeholder="Search by subject, code, department">
+            </label>
+            <div class="filter-row">
+                <select aria-label="Filter by department">
+                    <option>All departments</option>
+                    {% for department in departments %}
+                        <option>{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+                <select aria-label="Filter by status">
+                    <option>All statuses</option>
+                    <option>Active</option>
+                    <option>Pending</option>
+                    <option>Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Subject Code</th>
+                        <th>Subject</th>
+                        <th>Department</th>
+                        <th>Teachers</th>
+                        <th>Classes</th>
+                        <th>Weekly Hours</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.code }}</td>
+                            <td>
+                                <div class="student-name">
+                                    <span class="avatar small">{{ subject.name|slice:":1" }}</span>
+                                    <strong>{{ subject.name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ subject.department|default:"General" }}</td>
+                            <td>{{ subject.teachers }}</td>
+                            <td>{{ subject.classes }}</td>
+                            <td>{{ subject.hours }}</td>
+                            <td><span class="status-badge {{ subject.status|lower }}">{{ subject.status }}</span></td>
+                            <td><button class="text-button" type="button">View</button></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8">No subjects found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Departments</p>
+                <h2>Subject Coverage</h2>
+            </div>
+        </div>
+        <div class="department-list">
+            {% for department in departments %}
+                <article class="department-item">
+                    <div>
+                        <strong>{{ department.name }}</strong>
+                        <span>{{ department.subjects }} subjects</span>
+                    </div>
+                    <b>{{ department.coverage }}</b>
+                </article>
+            {% empty %}
+                <article class="department-item">
+                    <div>
+                        <strong>No departments</strong>
+                        <span>Add departments to show coverage</span>
+                    </div>
+                    <b>0%</b>
+                </article>
+            {% endfor %}
+        </div>
+    </aside>
+</section>
+{% endblock %}

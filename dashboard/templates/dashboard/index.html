@@ -1,0 +1,97 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Dashboard | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Academic overview</p>
+        <h1>School Dashboard</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="icon-button" type="button" aria-label="Search">⌕</button>
+        <!-- <button class="icon-button" type="button" aria-label="Notifications"></button> -->
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="School statistics">
+    {% for stat in stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>{{ stat.change }}</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-grid">
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Attendance</p>
+                <h2>Weekly Attendance</h2>
+            </div>
+            <span class="status-pill">Live</span>
+        </div>
+        <div class="bar-chart" aria-label="Weekly attendance chart">
+            <div class="bar" style="--height: 72%"><span>Mon</span></div>
+            <div class="bar" style="--height: 86%"><span>Tue</span></div>
+            <div class="bar" style="--height: 78%"><span>Wed</span></div>
+            <div class="bar" style="--height: 92%"><span>Thu</span></div>
+            <div class="bar" style="--height: 88%"><span>Fri</span></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Today</p>
+                <h2>Schedule</h2>
+            </div>
+        </div>
+        <div class="timeline">
+            {% for item in schedule %}
+                <div class="timeline-item">
+                    <time>{{ item.time }}</time>
+                    <div>
+                        <strong>{{ item.title }}</strong>
+                        <span>{{ item.meta }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Actions</p>
+                <h2>Quick Start</h2>
+            </div>
+        </div>
+        <div class="quick-actions">
+            {% for action in quick_actions %}
+                <button type="button">{{ action }}</button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Activity</p>
+                <h2>Recent Updates</h2>
+            </div>
+        </div>
+        <ul class="activity-list">
+            {% for item in recent_activity %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

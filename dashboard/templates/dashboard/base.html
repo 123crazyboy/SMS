@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SchoolMS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+    
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Primary navigation">
+            <a class="brand" href="{% url 'dashboard:index' %}">
+                <span class="brand-mark">ស</span>
+                <span>
+                    <strong>សាលា ៣១៤</strong>
+                    <small>Management</small>
+                </span>
+            </a>
+
+            <nav class="nav-list">
+                <a class="nav-link {% if current_page == 'dashboard' %}active{% endif %}" href="{% url 'dashboard:index' %}">Dashboard</a>
+                <a class="nav-link {% if current_page == 'students' %}active{% endif %}" href="{% url 'dashboard:students' %}">Students</a>
+                <a class="nav-link {% if current_page == 'teachers' %}active{% endif %}" href="{% url 'dashboard:teachers' %}">Teachers</a>
+                <a class="nav-link {% if current_page == 'classes' %}active{% endif %}" href="{% url 'dashboard:classes' %}">Classes</a>
+                <a class="nav-link {% if current_page == 'subjects' %}active{% endif %}" href="{% url 'dashboard:subjects' %}">Subjects</a>
+                <a class="nav-link {% if current_page == 'attendance' %}active{% endif %}" href="{% url 'dashboard:attendance' %}">Attendance</a>
+                <!-- <a class="nav-link" href="#">Reports</a> -->
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

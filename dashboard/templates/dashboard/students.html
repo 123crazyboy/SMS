@@ -1,0 +1,93 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Students | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Student records</p>
+        <h1>Students</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="primary-button" type="button">Add Student</button>
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="Student statistics">
+    {% for stat in student_stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>Current academic year</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="panel">
+    <div class="student-toolbar">
+        <label class="search-field">
+            <span>Search</span>
+            <input type="search" placeholder="Search by name, ID, grade">
+        </label>
+        <div class="filter-row">
+            <select aria-label="Filter by grade">
+                <option>All grades</option>
+                <option>Grade 12</option>
+                <option>Grade 11</option>
+                <option>Grade 10</option>
+                <option>Grade 9</option>
+            </select>
+            <select aria-label="Filter by status">
+                <option>All statuses</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Inactive</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Grade</th>
+                    <th>Section</th>
+                    <th>Guardian</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.id }}</td>
+                        <td>
+                            <div class="student-name">
+                                <span class="avatar small">{{ student.name|slice:":1" }}</span>
+                                <strong>{{ student.name }}</strong>
+                            </div>
+                        </td>
+                        <td>{{ student.grade }}</td>
+                        <td>{{ student.section }}</td>
+                        <td>{{ student.guardian }}</td>
+                        <td><span class="status-badge {{ student.status|lower }}">{{ student.status }}</span></td>
+                        <td>
+                            <a href="#"><button class="text-button" type="button">Edit</button></a>
+
+                            <a href="#"><button class="text-button" type="button">Delete</button></a>
+                        </td>
+
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

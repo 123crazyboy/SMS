@@ -1,0 +1,119 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Classes | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Class management</p>
+        <h1>Classes</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="primary-button" type="button">Create Class</button>
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="Class statistics">
+    {% for stat in class_stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>Current academic year</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-grid teacher-overview">
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Directory</p>
+                <h2>Class List</h2>
+            </div>
+            <button class="text-button" type="button">Export</button>
+        </div>
+
+        <div class="student-toolbar">
+            <label class="search-field">
+                <span>Search</span>
+                <input type="search" placeholder="Search by grade, advisor, room">
+            </label>
+            <div class="filter-row">
+                <select aria-label="Filter by grade">
+                    <option>All grades</option>
+                    <option>Grade 12</option>
+                    <option>Grade 11</option>
+                    <option>Grade 10</option>
+                    <option>Grade 9</option>
+                </select>
+                <select aria-label="Filter by status">
+                    <option>All statuses</option>
+                    <option>Active</option>
+                    <option>Pending</option>
+                    <option>Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Class Code</th>
+                        <th>Class</th>
+                        <th>Advisor</th>
+                        <th>Room</th>
+                        <th>Students</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class_item in classes %}
+                        <tr>
+                            <td>{{ class_item.code }}</td>
+                            <td>
+                                <div class="student-name">
+                                    <span class="avatar small">{{ class_item.name|slice:":1" }}</span>
+                                    <strong>{{ class_item.name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ class_item.advisor }}</td>
+                            <td>{{ class_item.room }}</td>
+                            <td>{{ class_item.students }}</td>
+                            <td>{{ class_item.schedule }}</td>
+                            <td><span class="status-badge {{ class_item.status|lower }}">{{ class_item.status }}</span></td>
+                            <td><button class="text-button" type="button">View</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Rooms</p>
+                <h2>Room Usage</h2>
+            </div>
+        </div>
+        <div class="department-list">
+            {% for room in room_usage %}
+                <article class="department-item">
+                    <div>
+                        <strong>{{ room.name }}</strong>
+                        <span>{{ room.use }}</span>
+                    </div>
+                    <b>{{ room.capacity }}</b>
+                </article>
+            {% endfor %}
+        </div>
+    </aside>
+</section>
+{% endblock %}

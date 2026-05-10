@@ -1,0 +1,118 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Attendance | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Daily tracking</p>
+        <h1>Attendance</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="primary-button" type="button">Record Attendance</button>
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="Attendance statistics">
+    {% for stat in attendance_stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>Today</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-grid teacher-overview">
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Today</p>
+                <h2>Class Attendance</h2>
+            </div>
+            <button class="text-button" type="button">Export</button>
+        </div>
+
+        <div class="student-toolbar">
+            <label class="search-field">
+                <span>Search</span>
+                <input type="search" placeholder="Search by class or advisor">
+            </label>
+            <div class="filter-row">
+                <select aria-label="Filter by class">
+                    <option>All classes</option>
+                    <option>Grade 12A</option>
+                    <option>Grade 11B</option>
+                    <option>Grade 10A</option>
+                    <option>Grade 9C</option>
+                </select>
+                <select aria-label="Filter by submission status">
+                    <option>All statuses</option>
+                    <option>Active</option>
+                    <option>Pending</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Advisor</th>
+                        <th>Present</th>
+                        <th>Absent</th>
+                        <th>Late</th>
+                        <th>Submitted</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                        <tr>
+                            <td>
+                                <div class="student-name">
+                                    <span class="avatar small">{{ record.class|slice:":1" }}</span>
+                                    <strong>{{ record.class }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ record.advisor }}</td>
+                            <td>{{ record.present }}</td>
+                            <td>{{ record.absent }}</td>
+                            <td>{{ record.late }}</td>
+                            <td>{{ record.submitted }}</td>
+                            <td><span class="status-badge {{ record.status|lower }}">{{ record.status }}</span></td>
+                            <td><button class="text-button" type="button">Review</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Week</p>
+                <h2>Attendance Rate</h2>
+            </div>
+        </div>
+        <div class="attendance-list">
+            {% for day in daily_breakdown %}
+                <article class="attendance-item">
+                    <span>{{ day.day }}</span>
+                    <div class="attendance-meter" aria-label="{{ day.day }} attendance {{ day.rate }}">
+                        <i style="--width: {{ day.rate }}"></i>
+                    </div>
+                    <strong>{{ day.rate }}</strong>
+                </article>
+            {% endfor %}
+        </div>
+    </aside>
+</section>
+{% endblock %}

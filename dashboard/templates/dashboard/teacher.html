@@ -1,0 +1,117 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Teachers | SchoolMS{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Faculty management</p>
+        <h1>Teachers</h1>
+    </div>
+    <div class="topbar-actions">
+        <button class="primary-button" type="button">Add Teacher</button>
+        <div class="profile-chip">
+            <span class="avatar">AD</span>
+            <span>Admin</span>
+        </div>
+    </div>
+</header>
+
+<section class="stats-grid" aria-label="Teacher statistics">
+    {% for stat in teacher_stats %}
+        <article class="stat-card {{ stat.tone }}">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value }}</strong>
+            <small>Current academic year</small>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-grid teacher-overview">
+    <div class="panel wide">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Directory</p>
+                <h2>Teacher List</h2>
+            </div>
+            <button class="text-button" type="button">Export</button>
+        </div>
+
+        <div class="student-toolbar">
+            <label class="search-field">
+                <span>Search</span>
+                <input type="search" placeholder="Search by name, ID, subject">
+            </label>
+            <div class="filter-row">
+                <select aria-label="Filter by department">
+                    <option>All departments</option>
+                    <option>Mathematics</option>
+                    <option>Science</option>
+                    <option>Languages</option>
+                    <option>Social Studies</option>
+                </select>
+                <select aria-label="Filter by status">
+                    <option>All statuses</option>
+                    <option>Active</option>
+                    <option>Leave</option>
+                    <option>Pending</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Teacher ID</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Classes</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for teacher in teachers %}
+                        <tr>
+                            <td>{{ teacher.id }}</td>
+                            <td>
+                                <div class="student-name">
+                                    <span class="avatar small">{{ teacher.name|slice:":1" }}</span>
+                                    <strong>{{ teacher.name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ teacher.subject }}</td>
+                            <td>{{ teacher.classes }}</td>
+                            <td>{{ teacher.phone }}</td>
+                            <td><span class="status-badge {{ teacher.status|lower }}">{{ teacher.status }}</span></td>
+                            <td><button class="text-button" type="button">View</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Departments</p>
+                <h2>Staff Coverage</h2>
+            </div>
+        </div>
+        <div class="department-list">
+            {% for department in departments %}
+                <article class="department-item">
+                    <div>
+                        <strong>{{ department.name }}</strong>
+                        <span>{{ department.teachers }} teachers</span>
+                    </div>
+                    <b>{{ department.coverage }}</b>
+                </article>
+            {% endfor %}
+        </div>
+    </aside>
+</section>
+{% endblock %}
